@@ -55,23 +55,22 @@ createAnnotationTrack_transcripts <- function(eventGr, gtf_exons,
 }
 #' @importFrom dplyr filter
 createExonTable <- function(gtf_exons, ids){
-  
+
   transcript_id <- NULL
   # Recover exons of transcripts for the inclusion track using transcript
   #IDs
   res <- dplyr::filter(as.data.frame(gtf_exons), 
-                       transcript_id %in% ids)
+                       gene_id %in% ids)
   
   # Create data frame for transcript track - follow the model 
   #from data(geneModels)
   res.df <- res[, c("seqnames", "start", "end", "strand", "exon_id",
-                    "transcript_name")]
+                    "transcript_id")]
   colnames(res.df) <- c("chromosome","start","end","strand","exon", 
                         "transcript")
   
   return(res.df)
 }
-
 #' @importFrom Gviz GeneRegionTrack
 #' @importFrom GenomicRanges GRanges
 createTxnTrack <- function(res.df, trackLabel, featureName){
